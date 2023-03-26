@@ -36,6 +36,10 @@
         "all": true,
         "writeText": true,
         "readText": true
+      },
+      "http": {
+        "all": true,
+        "scope": ["http://rwr.runningwithrifles.com/*"]
       }
     },
     "bundle": {

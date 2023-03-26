@@ -15,6 +15,10 @@ export const HOME_MENU: IMenuDefine = {
 
 export const MENU_LIST: IMenuDefine[] = [
   {
+    link: '/all_list',
+    title: '所有列表',
+  },
+  {
     link: '/about',
     title: '关于',
   },
@@ -25,6 +29,10 @@ export const routes: RouteDefinition[] = [
     path: '/',
     component: lazy(() => import('./entries/home/Home')),
     children: [
+      {
+        path: '/all_list',
+        component: lazy(() => import('./entries/allList/AllList')),
+      },
       {
         path: '/about',
         component: lazy(() => import('./entries/about/About')),

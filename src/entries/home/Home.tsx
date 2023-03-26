@@ -10,6 +10,7 @@ import {
 } from '@suid/material';
 import InboxIcon from '@suid/icons-material/Inbox';
 import { HOME_MENU, MENU_LIST } from '../../routes';
+import { mapArray } from 'solid-js';
 
 function Home() {
   const location = useLocation();
@@ -20,18 +21,21 @@ function Home() {
     <div class="w-full h-full overflow-auto flex">
       <div class="w-1/4 overflow-auto flex relative pr-2">
         <List class="flex-1 pr-2">
-          {MENU_LIST.map((m) => (
-            <ListItem disablePadding>
-              <Link href={m.link} class="w-full">
-                <ListItemButton selected={location.pathname === m.link}>
-                  <ListItemIcon>
-                    <InboxIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={m.title} />
-                </ListItemButton>
-              </Link>
-            </ListItem>
-          ))}
+          {mapArray(
+            () => MENU_LIST,
+            (m) => (
+              <ListItem disablePadding>
+                <Link href={m.link} class="w-full">
+                  <ListItemButton selected={location.pathname === m.link}>
+                    <ListItemIcon>
+                      <InboxIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={m.title} />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+            )
+          )}
         </List>
         <Divider class="absolute right-0 p-1" orientation="vertical" />
       </div>
