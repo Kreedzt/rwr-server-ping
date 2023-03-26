@@ -17,6 +17,22 @@ export const MENU_LIST: IMenuDefine[] = [
   {
     link: '/about',
     title: '关于',
-    component: About,
+  },
+];
+
+export const routes: RouteDefinition[] = [
+  {
+    path: '/',
+    component: lazy(() => import('./entries/home/Home')),
+    children: [
+      {
+        path: '/about',
+        component: lazy(() => import('./entries/about/About')),
+      },
+    ],
+  },
+  {
+    path: '*',
+    component: lazy(() => import('./entries/home/Home')),
   },
 ];

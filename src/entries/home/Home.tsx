@@ -1,6 +1,7 @@
-import { Link, Route, Routes, useLocation } from '@solidjs/router';
+import { Link, Outlet, Route, Routes, useLocation } from '@solidjs/router';
 import {
   Box,
+  Divider,
   List,
   ListItem,
   ListItemButton,
@@ -16,12 +17,12 @@ function Home() {
   console.log('location', location);
 
   return (
-    <div class="w-full h-full overflow-auto">
-      <Box>
-        <List>
-          {[HOME_MENU, ...MENU_LIST].map((m) => (
+    <div class="w-full h-full overflow-auto flex">
+      <div class="w-1/4 overflow-auto flex relative">
+        <List class="flex-1">
+          {MENU_LIST.map((m) => (
             <ListItem disablePadding>
-              <Link href={m.link}>
+              <Link href={m.link} class="w-full">
                 <ListItemButton autoFocus={location.pathname === m.link}>
                   <ListItemIcon>
                     <InboxIcon />
@@ -32,12 +33,11 @@ function Home() {
             </ListItem>
           ))}
         </List>
-      </Box>
-      <Routes>
-        {MENU_LIST.map((m) => (
-          <Route path={m.link} component={m.component} />
-        ))}
-      </Routes>
+        <Divider class="absolute right-0 p-2" orientation="vertical" />
+      </div>
+      <div class="w-3/4 overflow-auto ml-2">
+        <Outlet />
+      </div>
     </div>
   );
 }
