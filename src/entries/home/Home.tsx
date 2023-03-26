@@ -19,7 +19,7 @@ function Home() {
 
   return (
     <div class="w-full h-full overflow-auto flex">
-      <div class="w-1/4 overflow-auto flex relative pr-2">
+      <div class="w-64 overflow-auto flex relative pr-2">
         <List class="flex-1 pr-2">
           {mapArray(
             () => MENU_LIST,
@@ -39,7 +39,7 @@ function Home() {
         </List>
         <Divider class="absolute right-0 p-1" orientation="vertical" />
       </div>
-      <div class="w-3/4 overflow-auto ml-2">
+      <div class="flex-1 overflow-auto ml-2">
         <Outlet />
       </div>
     </div>

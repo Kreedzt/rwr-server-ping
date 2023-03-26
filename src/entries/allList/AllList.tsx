@@ -10,14 +10,23 @@ import {
   TableHead,
   TableRow,
 } from '@suid/material';
-import { createEffect, createSignal, mapArray, Show } from 'solid-js';
+import {
+  createEffect,
+  createSignal,
+  mapArray,
+  Match,
+  Show,
+  Switch,
+} from 'solid-js';
+import { invoke } from '@tauri-apps/api';
 import { getServerList } from '../../share/services';
 import { parseServerListFromString } from '../../share/utils';
 import { DisplayServerItem } from '../../share/types';
 
 function AllList() {
-  const [serverList, setServerList] = createSignal<DisplayServerItem[]>();
+  const [serverList, setServerList] = createSignal<DisplayServerItem[]>([]);
   const [loading, setLoading] = createSignal(false);
+  const [pingResult, setPingResult] = createSignal<Record<string, number>>({});
 
   async function refreshList() {
     try {
@@ -34,6 +43,7 @@ function AllList() {
       console.log('parsedData', parsedData);
 
       setServerList(parsedData);
+      setPingResult({});
     } catch (e) {
       console.error(e);
     } finally {
@@ -41,8 +51,47 @@ function AllList() {
     }
   }
 
+  async function pingSingle(ip: string) {
+    try {
+      const res = await invoke('ping_server', {
+        ip,
+      });
+
+      console.log('pingSingle res', res);
+
+      setPingResult((prev) => {
+        prev[ip] = res as number;
+        return {
+          ...prev,
+        };
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   async function pingList() {
-    //
+    const newPingResult = serverList().reduce((acc, serverItem) => {
+      acc[serverItem.ipAddress] = -1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    try {
+      // TODO: one call, all result
+      await Promise.all(
+        Object.keys(newPingResult).map(async (ip) => {
+          const res = await invoke('ping_server', {
+            ip,
+          });
+          newPingResult[ip] = res as number;
+        })
+      );
+      console.log('pingList res', newPingResult);
+
+      setPingResult(newPingResult);
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   createEffect(() => {
@@ -63,14 +112,14 @@ function AllList() {
         <Button
           variant="contained"
           color="warning"
-          onClick={refreshList}
+          onClick={pingList}
           disabled={loading()}
         >
           一键测速
         </Button>
       </div>
-      <TableContainer component={Paper}>
-        <Table>
+      <TableContainer component={Paper} class="max-h-96">
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell>服务器名称</TableCell>
@@ -92,8 +141,26 @@ function AllList() {
                   <TableCell component="th">
                     {server.currentPlayers}/{server.maxPlayers}
                   </TableCell>
-                  <TableCell component="th">未测速</TableCell>
-                  <TableCell component="th">测速?</TableCell>
+                  <TableCell component="th">
+                    <Switch fallback={pingResult()[server.ipAddress]}>
+                      <Match
+                        when={pingResult()[server.ipAddress] === undefined}
+                      >
+                        未测速
+                      </Match>
+                      <Match when={pingResult()[server.ipAddress] === -1}>
+                        超时
+                      </Match>
+                    </Switch>
+                  </TableCell>
+                  <TableCell component="th">
+                    <Button
+                      variant="text"
+                      onClick={() => pingSingle(server.ipAddress)}
+                    >
+                      测速
+                    </Button>
+                  </TableCell>
                 </TableRow>
               )
             )}
