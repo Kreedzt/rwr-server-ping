@@ -18,12 +18,12 @@ function Home() {
 
   return (
     <div class="w-full h-full overflow-auto flex">
-      <div class="w-1/4 overflow-auto flex relative">
-        <List class="flex-1">
+      <div class="w-1/4 overflow-auto flex relative pr-2">
+        <List class="flex-1 pr-2">
           {MENU_LIST.map((m) => (
             <ListItem disablePadding>
               <Link href={m.link} class="w-full">
-                <ListItemButton autoFocus={location.pathname === m.link}>
+                <ListItemButton selected={location.pathname === m.link}>
                   <ListItemIcon>
                     <InboxIcon />
                   </ListItemIcon>
@@ -33,7 +33,7 @@ function Home() {
             </ListItem>
           ))}
         </List>
-        <Divider class="absolute right-0 p-2" orientation="vertical" />
+        <Divider class="absolute right-0 p-1" orientation="vertical" />
       </div>
       <div class="w-3/4 overflow-auto ml-2">
         <Outlet />
