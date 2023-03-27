@@ -9,6 +9,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  CircularProgress,
 } from '@suid/material';
 import {
   createEffect,
@@ -27,6 +28,10 @@ function AllList() {
   const [serverList, setServerList] = createSignal<DisplayServerItem[]>([]);
   const [loading, setLoading] = createSignal(false);
   const [pingResult, setPingResult] = createSignal<Record<string, number>>({});
+  const [pingLoading, setPingLoading] = createSignal<Record<string, boolean>>(
+    {}
+  );
+  const [pingListLoading, setPingListLoading] = createSignal(false);
 
   async function refreshList() {
     try {
@@ -53,6 +58,13 @@ function AllList() {
 
   async function pingSingle(ip: string) {
     try {
+      setPingLoading((prev) => {
+        return {
+          ...prev,
+          [ip]: true,
+        };
+      });
+
       const res = await invoke('ping_server', {
         ip,
       });
@@ -67,6 +79,13 @@ function AllList() {
       });
     } catch (e) {
       console.error(e);
+    } finally {
+      setPingLoading((prev) => {
+        return {
+          ...prev,
+          [ip]: false,
+        };
+      });
     }
   }
 
@@ -76,21 +95,42 @@ function AllList() {
       return acc;
     }, {} as Record<string, number>);
 
+    const ipArray = Object.keys(newPingResult);
     try {
-      // TODO: one call, all result
-      await Promise.all(
-        Object.keys(newPingResult).map(async (ip) => {
-          const res = await invoke('ping_server', {
-            ip,
-          });
-          newPingResult[ip] = res as number;
-        })
-      );
-      console.log('pingList res', newPingResult);
+      setPingListLoading(true);
+
+      setPingLoading((prev) => {
+        const next = { ...prev };
+
+        ipArray.forEach((ip) => {
+          next[ip] = true;
+        });
+
+        return next;
+      });
+
+      const res = (await invoke('ping_server_list', {
+        ipVec: ipArray,
+      })) as number[];
+
+      ipArray.forEach((ip, index) => {
+        newPingResult[ip] = res[index];
+      });
 
       setPingResult(newPingResult);
     } catch (e) {
       console.error(e);
+    } finally {
+      setPingListLoading(false);
+      setPingLoading((prev) => {
+        const next = { ...prev };
+
+        ipArray.forEach((ip) => {
+          next[ip] = false;
+        });
+
+        return next;
+      });
     }
   }
 
@@ -113,7 +153,7 @@ function AllList() {
           variant="contained"
           color="warning"
           onClick={pingList}
-          disabled={loading()}
+          disabled={pingListLoading()}
         >
           一键测速
         </Button>
@@ -142,21 +182,27 @@ function AllList() {
                     {server.currentPlayers}/{server.maxPlayers}
                   </TableCell>
                   <TableCell component="th">
-                    <Switch fallback={pingResult()[server.ipAddress]}>
-                      <Match
-                        when={pingResult()[server.ipAddress] === undefined}
-                      >
-                        未测速
-                      </Match>
-                      <Match when={pingResult()[server.ipAddress] === -1}>
-                        超时
-                      </Match>
-                    </Switch>
+                    <Show
+                      when={!pingLoading()[server.ipAddress]}
+                      fallback={<CircularProgress />}
+                    >
+                      <Switch fallback={pingResult()[server.ipAddress]}>
+                        <Match
+                          when={pingResult()[server.ipAddress] === undefined}
+                        >
+                          未测速
+                        </Match>
+                        <Match when={pingResult()[server.ipAddress] === -1}>
+                          超时
+                        </Match>
+                      </Switch>
+                    </Show>
                   </TableCell>
                   <TableCell component="th">
                     <Button
                       variant="text"
                       onClick={() => pingSingle(server.ipAddress)}
+                      disabled={!!pingLoading()[server.ipAddress]}
                     >
                       测速
                     </Button>
