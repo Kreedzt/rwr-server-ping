@@ -47,7 +47,7 @@ fn ping_server_list(ip_vec: Vec<&str>) -> Result<Vec<i16>, String> {
         handle.join().unwrap();
     }
 
-    let mut new_result = Vec::new();
+    let mut new_result = Vec::with_capacity(vec_len);
     new_result.append(&mut *result.lock().unwrap());
 
     Ok(new_result)
