@@ -149,14 +149,16 @@ function AllList() {
         <Button variant="contained" onClick={refreshList} disabled={loading()}>
           刷新服务器列表
         </Button>
-        <Button
-          variant="contained"
-          color="warning"
-          onClick={pingList}
-          disabled={pingListLoading()}
-        >
-          一键测速
-        </Button>
+        <div class="ml-2">
+          <Button
+            variant="contained"
+            color="warning"
+            onClick={pingList}
+            disabled={pingListLoading()}
+          >
+            一键测速
+          </Button>
+        </div>
       </div>
       <TableContainer component={Paper} class="max-h-96">
         <Table stickyHeader>

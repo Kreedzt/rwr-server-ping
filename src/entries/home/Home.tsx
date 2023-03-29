@@ -27,9 +27,7 @@ function Home() {
               <ListItem disablePadding>
                 <Link href={m.link} class="w-full">
                   <ListItemButton selected={location.pathname === m.link}>
-                    <ListItemIcon>
-                      <InboxIcon />
-                    </ListItemIcon>
+                    <ListItemIcon>{m.icon}</ListItemIcon>
                     <ListItemText primary={m.title} />
                   </ListItemButton>
                 </Link>
