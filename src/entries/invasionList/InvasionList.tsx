@@ -21,7 +21,7 @@ function InvasionList() {
   });
 
   return (
-    <div>
+    <div class="flex h-full flex-col">
       <Show when={loading()}>
         <div class="mb-2">
           <LinearProgress />
@@ -43,6 +43,7 @@ function InvasionList() {
         </div>
       </div>
       <ServerList
+        containerClass="flex-1"
         data={serverList}
         latencyRecord={pingResult}
         pingLoading={pingLoading}
