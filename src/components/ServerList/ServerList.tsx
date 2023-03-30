@@ -1,6 +1,7 @@
 import { DisplayServerItem } from '../../share/types';
 import {
   Button,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -9,13 +10,19 @@ import {
   TableHead,
   TableRow,
 } from '@suid/material';
-import { mapArray } from 'solid-js';
+import SignalCellular4BarIcon from '@suid/icons-material/SignalCellular4Bar';
+import { Accessor, For, mapArray, Match, Show, Signal, Switch } from 'solid-js';
 
 interface IServerListProps {
-  data: DisplayServerItem[];
+  data: Accessor<DisplayServerItem[]>;
+  latencyRecord: Accessor<Record<string, number>>;
+  pingLoading: Accessor<Record<string, boolean>>;
+  onPing: (s: DisplayServerItem) => void;
 }
 
 function ServerList(props: IServerListProps) {
+  const { data, pingLoading, latencyRecord, onPing } = props;
+
   return (
     <div>
       <TableContainer component={Paper} class="max-h-96">
@@ -26,14 +33,16 @@ function ServerList(props: IServerListProps) {
               <TableCell>IP</TableCell>
               <TableCell>端口</TableCell>
               <TableCell>玩家负载</TableCell>
-              <TableCell>延迟</TableCell>
+              <TableCell>
+                <SignalCellular4BarIcon />
+                延迟
+              </TableCell>
               <TableCell>操作</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {mapArray(
-              () => props.data,
-              (server) => (
+            <For each={data()}>
+              {(server) => (
                 <TableRow>
                   <TableCell component="th">{server.name}</TableCell>
                   <TableCell component="th">{server.ipAddress}</TableCell>
@@ -41,13 +50,35 @@ function ServerList(props: IServerListProps) {
                   <TableCell component="th">
                     {server.currentPlayers}/{server.maxPlayers}
                   </TableCell>
-                  <TableCell component="th"></TableCell>
                   <TableCell component="th">
-                    <Button variant="text">测速</Button>
+                    <Show
+                      when={!pingLoading()[server.ipAddress]}
+                      fallback={<CircularProgress />}
+                    >
+                      <Switch fallback={latencyRecord()[server.ipAddress]}>
+                        <Match
+                          when={latencyRecord()[server.ipAddress] === undefined}
+                        >
+                          未测速
+                        </Match>
+                        <Match when={latencyRecord()[server.ipAddress] === -1}>
+                          超时
+                        </Match>
+                      </Switch>
+                    </Show>
+                  </TableCell>
+                  <TableCell component="th">
+                    <Button
+                      disabled={pingLoading()[server.ipAddress]}
+                      variant="text"
+                      onClick={() => onPing(server)}
+                    >
+                      测速
+                    </Button>
                   </TableCell>
                 </TableRow>
-              )
-            )}
+              )}
+            </For>
           </TableBody>
         </Table>
       </TableContainer>

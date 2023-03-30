@@ -1,9 +1,9 @@
-import { Button, LinearProgress } from '@suid/material';
 import { Show } from 'solid-js';
-import ServerList from '../../components/ServerList/ServerList';
+import { Button, LinearProgress } from '@suid/material';
 import { useServerList } from '../../components/ServerList/useServerList';
+import ServerList from '../../components/ServerList/ServerList';
 
-function AllList() {
+function InvasionList() {
   const {
     loading,
     refreshList,
@@ -47,4 +47,4 @@ function AllList() {
   );
 }
 
-export default AllList;
+export default InvasionList;
