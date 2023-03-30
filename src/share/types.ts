@@ -47,8 +47,8 @@ export interface DisplayServerItem {
   url: Nullable<string>;
   maxPlayers: number;
   mode: string;
-  // TODO: unknown value
-  realm: Nullable<any>;
+  // 'official_invasion' | 'official_pacific' | ''
+  realm: Nullable<string>;
 }
 
 export interface OnlineStats {

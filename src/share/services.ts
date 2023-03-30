@@ -1,4 +1,4 @@
-import { getClient, ResponseType } from '@tauri-apps/api/http';
+import { getClient, Response, ResponseType } from "@tauri-apps/api/http";
 import { SERVER_API_URL } from '../constants';
 
 export const getServerList = async (params: {

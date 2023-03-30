@@ -1,7 +1,10 @@
 import { createEffect, createSignal } from 'solid-js';
 import { DisplayServerItem } from '../../share/types';
 import { getServerList } from '../../share/services';
-import { parseServerListFromString } from '../../share/utils';
+import {
+  getUnlimitedServerList,
+  parseServerListFromString,
+} from '../../share/utils';
 import { invoke } from '@tauri-apps/api';
 
 interface IUseServerListParams {
@@ -10,7 +13,7 @@ interface IUseServerListParams {
 }
 
 export const useServerList = (params: IUseServerListParams) => {
-  const { autoRefresh } = params;
+  const { autoRefresh, filter } = params;
 
   const [serverList, setServerList] = createSignal<DisplayServerItem[]>([]);
   const [loading, setLoading] = createSignal(false);
@@ -23,18 +26,21 @@ export const useServerList = (params: IUseServerListParams) => {
   async function refreshList() {
     try {
       setLoading(true);
-      const res = await getServerList({
-        start: 0,
-        size: 20,
-        names: 1,
+
+      const resData = await getUnlimitedServerList();
+
+      console.log('resData', resData);
+
+      const nextData = resData.filter((server) => {
+        if (filter) {
+          return filter(server);
+        }
+
+        return true;
       });
+      console.log('nextData', nextData);
 
-      console.log('res', res);
-
-      const parsedData = parseServerListFromString(res.data as string);
-      console.log('parsedData', parsedData);
-
-      setServerList(parsedData);
+      setServerList(nextData);
       setPingResult({});
     } catch (e) {
       console.error(e);

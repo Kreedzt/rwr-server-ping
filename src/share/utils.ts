@@ -1,5 +1,6 @@
 import { XMLParser } from 'fast-xml-parser';
 import { DisplayServerItem, Res } from './types';
+import { getServerList } from './services';
 
 const fixPlayerList = (raw: string | undefined | string[]): string[] => {
   if (Array.isArray(raw)) {
@@ -45,4 +46,28 @@ export const parseServerListFromString = (
   });
 
   return serverList;
+};
+
+export const getUnlimitedServerList = async () => {
+  let start = 0;
+  const size = 100;
+
+  const totalServerList: DisplayServerItem[] = [];
+
+  let parsedServerList: DisplayServerItem[] = [];
+
+  do {
+    const newServerList = await getServerList({
+      start,
+      size,
+      names: 1,
+    });
+
+    parsedServerList = parseServerListFromString(newServerList.data as string);
+
+    totalServerList.push(...parsedServerList);
+    start += size;
+  } while (parsedServerList.length === size);
+
+  return totalServerList;
 };

@@ -13,7 +13,12 @@ function InvasionList() {
     pingResult,
     pingSingle,
     pingList,
-  } = useServerList({ autoRefresh: true });
+  } = useServerList({
+    autoRefresh: true,
+    filter: (s) => {
+      return s.realm === 'official_invasion';
+    },
+  });
 
   return (
     <div>
