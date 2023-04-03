@@ -11,7 +11,7 @@ use utils::{get_ping_res_ms, ping_addr};
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
-fn ping_server(ip: &str) -> Result<i16, String> {
+async fn ping_server(ip: &str) -> Result<i16, String> {
     let res = ping_addr(ip, 1000);
     let ms = get_ping_res_ms(&res);
 
@@ -19,7 +19,7 @@ fn ping_server(ip: &str) -> Result<i16, String> {
 }
 
 #[tauri::command]
-fn ping_server_list(ip_vec: Vec<&str>) -> Result<Vec<i16>, String> {
+async fn ping_server_list(ip_vec: Vec<&str>) -> Result<Vec<i16>, String> {
     let vec_len = ip_vec.len();
     let mut res_vec: Vec<i16> = vec![-1; vec_len];
     let result = Arc::new(Mutex::new(res_vec));

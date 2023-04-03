@@ -10,8 +10,9 @@ import {
   TableHead,
   TableRow,
 } from '@suid/material';
-import SignalCellular4BarIcon from '@suid/icons-material/SignalCellular4Bar';
 import { Accessor, For, mapArray, Match, Show, Signal, Switch } from 'solid-js';
+import ActionList from './ActionList';
+import { IServerActionDefine } from './types';
 
 interface IServerListProps {
   data: Accessor<DisplayServerItem[]>;
@@ -19,10 +20,12 @@ interface IServerListProps {
   pingLoading: Accessor<Record<string, boolean>>;
   onPing: (s: DisplayServerItem) => void;
   containerClass?: string;
+  actions?: IServerActionDefine[];
 }
 
 function ServerList(props: IServerListProps) {
-  const { data, pingLoading, latencyRecord, onPing, containerClass } = props;
+  const { data, pingLoading, latencyRecord, onPing, containerClass, actions } =
+    props;
 
   return (
     <TableContainer component={Paper} class={containerClass}>
@@ -33,10 +36,7 @@ function ServerList(props: IServerListProps) {
             <TableCell>IP</TableCell>
             <TableCell>端口</TableCell>
             <TableCell>玩家负载</TableCell>
-            <TableCell>
-              <SignalCellular4BarIcon />
-              延迟
-            </TableCell>
+            <TableCell>延迟</TableCell>
             <TableCell>操作</TableCell>
           </TableRow>
         </TableHead>
@@ -75,6 +75,9 @@ function ServerList(props: IServerListProps) {
                   >
                     测速
                   </Button>
+                  <Show when={!!actions}>
+                    <ActionList actions={actions!} data={server} />
+                  </Show>
                 </TableCell>
               </TableRow>
             )}

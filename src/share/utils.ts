@@ -71,3 +71,18 @@ export const getUnlimitedServerList = async () => {
 
   return totalServerList;
 };
+
+/**
+ * @example "media/packages/vanilla/maps/map13" -> "map13"
+ * @param str mapId,
+ */
+export const getMapNameByFullId = (mapId: string): string => {
+  const group = mapId.split('/');
+  const mapName = group[group.length - 1];
+
+  return mapName;
+};
+
+export const getServerJoinCmd = (s: DisplayServerItem): string => {
+  return `steam://rungameid/270150//server_address=${s.ipAddress}%20server_port=${s.port}`;
+};
