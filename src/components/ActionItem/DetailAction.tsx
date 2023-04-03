@@ -1,6 +1,7 @@
 import { Box, Button, Modal, Typography } from '@suid/material';
 import { Accessor, Show } from 'solid-js';
 import { clipboard, shell } from '@tauri-apps/api';
+import { toast } from 'solid-toast';
 import { DisplayServerItem } from '../../share/types';
 import ModalContent from '../ModalContent/ModalContent';
 import { getMapNameByFullId, getServerJoinCmd } from '../../share/utils';
@@ -18,6 +19,9 @@ function DetailAction(props: DetailActionProps) {
     try {
       console.log('joinCmd:', getServerJoinCmd(data()!));
       await shell.open(getServerJoinCmd(data()!));
+      toast.success('已发送命令请求，请检查 steam 是否被呼起', {
+        position: 'top-right',
+      });
     } catch (e) {
       console.error(e);
     }
@@ -27,6 +31,9 @@ function DetailAction(props: DetailActionProps) {
     try {
       console.log('joinCmd:', getServerJoinCmd(data()!));
       await clipboard.writeText(getServerJoinCmd(data()!));
+      toast.success('已复制到剪贴板', {
+        position: 'top-right',
+      });
     } catch (e) {
       console.error(e);
     }

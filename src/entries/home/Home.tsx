@@ -8,15 +8,12 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@suid/material';
-import InboxIcon from '@suid/icons-material/Inbox';
-import { HOME_MENU, MENU_LIST } from '../../routes';
+import { MENU_LIST } from '../../routes';
 import { mapArray } from 'solid-js';
+import { Toaster } from 'solid-toast';
 
 function Home() {
   const location = useLocation();
-
-  console.log('location', location);
-
   return (
     <div class="w-full h-full overflow-auto flex">
       <div class="w-64 overflow-auto flex relative pr-2">
@@ -40,6 +37,7 @@ function Home() {
       <div class="flex-1 overflow-auto ml-2">
         <Outlet />
       </div>
+      <Toaster />
     </div>
   );
 }
