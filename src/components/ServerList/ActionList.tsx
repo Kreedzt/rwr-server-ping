@@ -25,11 +25,6 @@ function ActionList(props: ActionListProps) {
     console.log('onMenuClick', arg);
   };
 
-  const onOptionClick = (...arg: any[]) => {
-    console.log('onOptionClick', arg);
-    onClose();
-  };
-
   return (
     <>
       <IconButton
@@ -60,7 +55,12 @@ function ActionList(props: ActionListProps) {
         }}
       >
         {actions.map((option) => (
-          <MenuItem onClick={() => option.onClick?.(data)}>
+          <MenuItem
+            onClick={() => {
+              option.onClick?.(data);
+              onClose();
+            }}
+          >
             {option.title}
           </MenuItem>
         ))}

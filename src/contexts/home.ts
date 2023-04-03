@@ -1,14 +1,8 @@
 import { createContext } from 'solid-js';
+import { StoreModel } from '../model/store';
 
-export interface IHomeContext {
-  showMessage: (
-    type: 'success' | 'error' | 'warn' | 'info',
-    msg: string
-  ) => void;
+export interface IHomeContextValue {
+  configStore: StoreModel;
 }
 
-export const HomeContext = createContext<IHomeContext>({
-  showMessage: () => {
-    //
-  },
-});
+export const HomeContext = createContext<IHomeContextValue>({} as any);

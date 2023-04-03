@@ -1,13 +1,17 @@
 import { Button, LinearProgress } from '@suid/material';
-import { Show } from 'solid-js';
+import { Show, useContext } from 'solid-js';
 import ServerList from '../../components/ServerList/ServerList';
 import { useServerList } from '../../components/ServerList/useServerList';
 import { IServerActionDefine } from '../../components/ServerList/types';
 import { useDetailAction } from '../../components/ActionItem/useDetailAction';
-import DetailAction from "../../components/ActionItem/DetailAction";
-import { DisplayServerItem } from "../../share/types";
+import DetailAction from '../../components/ActionItem/DetailAction';
+import { DisplayServerItem } from '../../share/types';
+import { HomeContext } from '../../contexts/home';
+import { toast } from 'solid-toast';
 
 function AllList() {
+  const homeContext = useContext(HomeContext);
+
   const {
     loading,
     refreshList,
@@ -27,10 +31,15 @@ function AllList() {
     },
     {
       title: '收藏',
-      onClick: (s: DisplayServerItem) => {
-        console.log('on favorite', s);
-      }
-    }
+      onClick: async (s: DisplayServerItem) => {
+        try {
+          await homeContext?.configStore.addFavorite(s);
+          toast.success('添加成功');
+        } catch (e: any) {
+          toast.error(e.message);
+        }
+      },
+    },
   ];
 
   return (

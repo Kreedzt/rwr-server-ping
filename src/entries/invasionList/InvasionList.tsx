@@ -1,9 +1,17 @@
-import { Show } from 'solid-js';
+import { Show, useContext } from 'solid-js';
 import { Button, LinearProgress } from '@suid/material';
 import { useServerList } from '../../components/ServerList/useServerList';
 import ServerList from '../../components/ServerList/ServerList';
+import { useDetailAction } from '../../components/ActionItem/useDetailAction';
+import { IServerActionDefine } from '../../components/ServerList/types';
+import { DisplayServerItem } from '../../share/types';
+import { HomeContext } from '../../contexts/home';
+import { toast } from 'solid-toast';
+import DetailAction from '../../components/ActionItem/DetailAction';
 
 function InvasionList() {
+  const homeContext = useContext(HomeContext);
+
   const {
     loading,
     refreshList,
@@ -19,6 +27,25 @@ function InvasionList() {
       return s.realm === 'official_invasion';
     },
   });
+
+  const { show, ...elProps } = useDetailAction();
+  const actions: IServerActionDefine[] = [
+    {
+      title: '详情',
+      onClick: show,
+    },
+    {
+      title: '收藏',
+      onClick: async (s: DisplayServerItem) => {
+        try {
+          await homeContext?.configStore.addFavorite(s);
+          toast.success('添加成功');
+        } catch (e: any) {
+          toast.error(e.message);
+        }
+      },
+    },
+  ];
 
   return (
     <div class="flex h-full flex-col">
@@ -48,7 +75,10 @@ function InvasionList() {
         latencyRecord={pingResult}
         pingLoading={pingLoading}
         onPing={pingSingle}
+        actions={actions}
       />
+
+      <DetailAction {...elProps} />
     </div>
   );
 }
