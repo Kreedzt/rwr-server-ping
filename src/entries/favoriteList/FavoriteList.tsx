@@ -3,14 +3,16 @@ import { Button, LinearProgress } from '@suid/material';
 import { useServerList } from '../../components/ServerList/useServerList';
 import ServerList from '../../components/ServerList/ServerList';
 import { HomeContext } from '../../contexts/home';
-import { DisplayServerItem } from "../../share/types";
-import { toast } from "solid-toast";
-import { IServerActionDefine } from "../../components/ServerList/types";
+import { DisplayServerItem } from '../../share/types';
+import { toast } from 'solid-toast';
+import { IServerActionDefine } from '../../components/ServerList/types';
 import { useDetailAction } from '../../components/ActionItem/useDetailAction';
-import DetailAction from "../../components/ActionItem/DetailAction";
+import DetailAction from '../../components/ActionItem/DetailAction';
+import { useTranslate } from '../../hooks/useTranslate';
 
 function FavoriteList() {
   const homeContext = useContext(HomeContext);
+  const t = useTranslate();
 
   const {
     loading,
@@ -31,15 +33,15 @@ function FavoriteList() {
   const { show, ...elProps } = useDetailAction();
   const actions: IServerActionDefine[] = [
     {
-      title: '详情',
+      title: t('action_detail'),
       onClick: show,
     },
     {
-      title: '移除',
+      title: t('action_remove'),
       onClick: async (s: DisplayServerItem) => {
         try {
           await homeContext?.configStore.removeFavorite(s);
-          toast.success('已移除');
+          toast.success(t('message_remove'));
           await refreshList();
         } catch (e: any) {
           toast.error(e.message);
@@ -57,7 +59,7 @@ function FavoriteList() {
       </Show>
       <div class="flex">
         <Button variant="contained" onClick={refreshList} disabled={loading()}>
-          刷新服务器列表
+          {t('refresh_server_list')}
         </Button>
         <div class="ml-2">
           <Button
@@ -66,7 +68,7 @@ function FavoriteList() {
             onClick={pingList}
             disabled={pingListLoading()}
           >
-            一键测速
+            {t('quick_ping')}
           </Button>
         </div>
       </div>

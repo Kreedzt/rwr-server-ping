@@ -23,32 +23,32 @@ export const HOME_MENU: IMenuDefine = {
 export const MENU_LIST: IMenuDefine[] = [
   {
     link: '/all_list',
-    title: '所有服务器列表',
+    title: 'menu_all_server_list',
     icon: <ListIcon />,
   },
   {
     link: '/invasion_list',
-    title: '官方入侵服务器列表',
+    title: 'menu_invasion_server_list',
     icon: <ListIcon />,
   },
   {
     link: '/ww2_invasion_list',
-    title: '官方二战服务器列表',
+    title: 'menu_ww2_invasion_server_list',
     icon: <ListIcon />,
   },
   {
     link: '/favorite_list',
-    title: '收藏服务器列表',
+    title: 'menu_favorite',
     icon: <StarIcon />,
   },
   {
     link: '/setting',
-    title: '设置',
+    title: 'setting',
     icon: <SettingsIcon />,
   },
   {
     link: '/about',
-    title: '关于',
+    title: 'about',
     icon: <InfoIcon />,
   },
 ];

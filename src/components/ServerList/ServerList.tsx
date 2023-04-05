@@ -13,6 +13,7 @@ import {
 import { Accessor, For, mapArray, Match, Show, Signal, Switch } from 'solid-js';
 import ActionList from './ActionList';
 import { IServerActionDefine } from './types';
+import { useTranslate } from '../../hooks/useTranslate';
 
 interface IServerListProps {
   data: Accessor<DisplayServerItem[]>;
@@ -24,6 +25,8 @@ interface IServerListProps {
 }
 
 function ServerList(props: IServerListProps) {
+  const t = useTranslate();
+
   const { data, pingLoading, latencyRecord, onPing, containerClass, actions } =
     props;
 
@@ -32,12 +35,12 @@ function ServerList(props: IServerListProps) {
       <Table stickyHeader>
         <TableHead>
           <TableRow>
-            <TableCell>服务器名称</TableCell>
-            <TableCell>IP</TableCell>
-            <TableCell>端口</TableCell>
-            <TableCell>玩家负载</TableCell>
-            <TableCell>延迟</TableCell>
-            <TableCell>操作</TableCell>
+            <TableCell>{t('column_server_name')}</TableCell>
+            <TableCell>{t('column_ip')}</TableCell>
+            <TableCell>{t('column_port')}</TableCell>
+            <TableCell>{t('column_player_load')}</TableCell>
+            <TableCell>{t('column_latency')}</TableCell>
+            <TableCell>{t('column_action')}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -59,10 +62,10 @@ function ServerList(props: IServerListProps) {
                       <Match
                         when={latencyRecord()[server.ipAddress] === undefined}
                       >
-                        未测速
+                        {t('response_non_ping')}
                       </Match>
                       <Match when={latencyRecord()[server.ipAddress] === -1}>
-                        超时
+                        {t('response_timeout')}
                       </Match>
                     </Switch>
                   </Show>
@@ -73,7 +76,7 @@ function ServerList(props: IServerListProps) {
                     variant="text"
                     onClick={() => onPing(server)}
                   >
-                    测速
+                    {t('ping')}
                   </Button>
                   <Show when={!!actions}>
                     <ActionList actions={actions!} data={server} />

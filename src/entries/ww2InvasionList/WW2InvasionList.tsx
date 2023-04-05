@@ -8,8 +8,10 @@ import { DisplayServerItem } from '../../share/types';
 import { HomeContext } from '../../contexts/home';
 import { toast } from 'solid-toast';
 import DetailAction from '../../components/ActionItem/DetailAction';
+import { useTranslate } from "../../hooks/useTranslate";
 
 function WW2InvasionList() {
+  const t = useTranslate();
   const homeContext = useContext(HomeContext);
 
   const {
@@ -31,11 +33,11 @@ function WW2InvasionList() {
   const { show, ...elProps } = useDetailAction();
   const actions: IServerActionDefine[] = [
     {
-      title: '详情',
+      title: t('action_detail'),
       onClick: show,
     },
     {
-      title: '收藏',
+      title: t('action_add_to_favorite'),
       onClick: async (s: DisplayServerItem) => {
         try {
           await homeContext?.configStore.addFavorite(s);
@@ -56,7 +58,7 @@ function WW2InvasionList() {
       </Show>
       <div class="flex">
         <Button variant="contained" onClick={refreshList} disabled={loading()}>
-          刷新服务器列表
+          {t('refresh_server_list')}
         </Button>
         <div class="ml-2">
           <Button
@@ -65,7 +67,7 @@ function WW2InvasionList() {
             onClick={pingList}
             disabled={pingListLoading()}
           >
-            一键测速
+            {t('quick_ping')}
           </Button>
         </div>
       </div>

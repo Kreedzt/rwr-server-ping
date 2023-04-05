@@ -11,11 +11,13 @@ interface IFavorite {
 
 export interface IAppConfig {
   favoriteList: IFavorite[];
+  locale: string;
 }
 
 const genDefaultConfig = (): IAppConfig => {
   return {
     favoriteList: [],
+    locale: 'en_US'
   };
 };
 
@@ -32,6 +34,8 @@ export class StoreModel {
     } else {
       await this.flushConfig();
     }
+
+    return this.config;
   }
 
   async flushConfig() {
@@ -70,6 +74,11 @@ export class StoreModel {
     this.config.favoriteList = this.config.favoriteList.filter((f) => {
       return !(f.ip === s.ipAddress && f.port === s.port);
     });
+    await this.flushConfig();
+  }
+
+  async updateLocale(locale: string) {
+    this.config.locale = locale;
     await this.flushConfig();
   }
 

@@ -11,6 +11,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@solid-primitives/i18n": "^1.2.4",
     "@solidjs/router": "^0.8.2",
     "@suid/icons-material": "^0.5.11",
     "@suid/material": "^0.11.1",

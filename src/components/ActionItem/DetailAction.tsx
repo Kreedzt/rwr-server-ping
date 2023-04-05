@@ -5,6 +5,7 @@ import { toast } from 'solid-toast';
 import { DisplayServerItem } from '../../share/types';
 import ModalContent from '../ModalContent/ModalContent';
 import { getMapNameByFullId, getServerJoinCmd } from '../../share/utils';
+import { useTranslate } from '../../hooks/useTranslate';
 
 interface DetailActionProps {
   open: Accessor<boolean>;
@@ -14,12 +15,13 @@ interface DetailActionProps {
 
 function DetailAction(props: DetailActionProps) {
   const { open, onClose, data } = props;
+  const t = useTranslate();
 
   const onJoinGame = async () => {
     try {
       console.log('joinCmd:', getServerJoinCmd(data()!));
       await shell.open(getServerJoinCmd(data()!));
-      toast.success('已发送命令请求，请检查 steam 是否被呼起', {
+      toast.success(t('message_join_game'), {
         position: 'top-right',
       });
     } catch (e) {
@@ -31,7 +33,7 @@ function DetailAction(props: DetailActionProps) {
     try {
       console.log('joinCmd:', getServerJoinCmd(data()!));
       await clipboard.writeText(getServerJoinCmd(data()!));
-      toast.success('已复制到剪贴板', {
+      toast.success(t('message_copy'), {
         position: 'top-right',
       });
     } catch (e) {
@@ -44,25 +46,39 @@ function DetailAction(props: DetailActionProps) {
       <ModalContent>
         <Show
           when={!!data()}
-          fallback={<Typography variant="h1">暂无内容</Typography>}
+          fallback={<Typography variant="h1">{t('empty')}</Typography>}
         >
-          <Typography variant="h5">名称：{data()!.name}</Typography>
-          <Typography variant="h5">描述：{data()!.comment}</Typography>
-          <Typography variant="h5">IP：{data()!.ipAddress}</Typography>
-          <Typography variant="h5">端口：{data()!.port}</Typography>
-          <Typography variant="h5">地区：{data()!.country}</Typography>
-          <Typography variant="h5">游戏版本：{data()!.version}</Typography>
-          <Typography variant="h5">
-            地图：{getMapNameByFullId(data()!.mapId)}
+          <Typography variant="h6">{t('column_server_name')}：</Typography>
+          <Typography variant="subtitle1">{data()!.name}</Typography>
+
+          <Typography variant="h6">{t('column_desc')}：</Typography>
+          <Typography variant="subtitle1">{data()!.comment}</Typography>
+
+          <Typography variant="h6">{t('column_ip')}：</Typography>
+          <Typography variant="subtitle1">{data()!.ipAddress}</Typography>
+
+          <Typography variant="h6">{t('column_port')}：</Typography>
+          <Typography variant="subtitle1">{data()!.port}</Typography>
+
+          <Typography variant="h6">{t('column_country')}：</Typography>
+          <Typography variant="subtitle1">{data()!.country}</Typography>
+
+          <Typography variant="h6">{t('column_game_version')}：</Typography>
+          <Typography variant="subtitle1">{data()!.version}</Typography>
+
+          <Typography variant="h6">{t('column_map')}：</Typography>
+          <Typography variant="subtitle1">
+            {getMapNameByFullId(data()!.mapId)}
           </Typography>
-          <Typography variant="h5">
-            玩家负载：
+
+          <Typography variant="h6">{t('column_player_load')}：</Typography>
+          <Typography variant="subtitle1">
             {data()!.currentPlayers} / {data()!.maxPlayers}
           </Typography>
 
           <div class="flex">
             <Button variant="contained" onClick={onJoinGame}>
-              加入游戏
+              {t('action_join_game')}
             </Button>
             <div class="ml-2">
               <Button
@@ -70,7 +86,7 @@ function DetailAction(props: DetailActionProps) {
                 variant="contained"
                 color="warning"
               >
-                复制 steam 游戏启动连接
+                {t('action_copy_join_cmd')}
               </Button>
             </div>
           </div>

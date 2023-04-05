@@ -8,9 +8,11 @@ import { DisplayServerItem } from '../../share/types';
 import { HomeContext } from '../../contexts/home';
 import { toast } from 'solid-toast';
 import DetailAction from '../../components/ActionItem/DetailAction';
+import { useTranslate } from '../../hooks/useTranslate';
 
 function InvasionList() {
   const homeContext = useContext(HomeContext);
+  const t = useTranslate();
 
   const {
     loading,
@@ -31,15 +33,15 @@ function InvasionList() {
   const { show, ...elProps } = useDetailAction();
   const actions: IServerActionDefine[] = [
     {
-      title: '详情',
+      title: t('action_detail'),
       onClick: show,
     },
     {
-      title: '收藏',
+      title: t('action_add_to_favorite'),
       onClick: async (s: DisplayServerItem) => {
         try {
           await homeContext?.configStore.addFavorite(s);
-          toast.success('添加成功');
+          toast.success(t('message_add_success'));
         } catch (e: any) {
           toast.error(e.message);
         }
@@ -56,7 +58,7 @@ function InvasionList() {
       </Show>
       <div class="flex">
         <Button variant="contained" onClick={refreshList} disabled={loading()}>
-          刷新服务器列表
+          {t('refresh_server_list')}
         </Button>
         <div class="ml-2">
           <Button
@@ -65,7 +67,7 @@ function InvasionList() {
             onClick={pingList}
             disabled={pingListLoading()}
           >
-            一键测速
+            {t('quick_ping')}
           </Button>
         </div>
       </div>

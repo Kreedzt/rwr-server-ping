@@ -14,10 +14,14 @@ import { createEffect, createSignal, mapArray, Show } from 'solid-js';
 import { Toaster } from 'solid-toast';
 import { HomeContext, IHomeContextValue } from '../../contexts/home';
 import { StoreModel } from '../../model/store';
+import { useTranslate } from '../../hooks/useTranslate';
+import { useI18n } from '@solid-primitives/i18n';
 
 function Home() {
   const location = useLocation();
   const [initLoading, setInitLoading] = createSignal(false);
+  const [_t, { locale }] = useI18n();
+  const t = useTranslate();
 
   const contextValue: IHomeContextValue = {
     configStore: new StoreModel(),
@@ -25,7 +29,9 @@ function Home() {
 
   createEffect(() => {
     setInitLoading(true);
-    contextValue.configStore.init();
+    contextValue.configStore.init().then((newConfig) => {
+      locale(newConfig.locale);
+    });
     setInitLoading(false);
   });
 
@@ -42,7 +48,7 @@ function Home() {
                     <Link href={m.link} class="w-full">
                       <ListItemButton selected={location.pathname === m.link}>
                         <ListItemIcon>{m.icon}</ListItemIcon>
-                        <ListItemText primary={m.title} />
+                        <ListItemText primary={t(m.title as any)} />
                       </ListItemButton>
                     </Link>
                   </ListItem>
@@ -51,7 +57,7 @@ function Home() {
             </List>
             <Divider class="absolute right-0 p-1" orientation="vertical" />
           </div>
-          <div class="flex-1 overflow-auto ml-2">
+          <div class="flex-1 overflow-auto ml-2 p-2">
             <Outlet />
           </div>
           <Toaster />
