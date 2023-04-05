@@ -1,5 +1,6 @@
 use std::error::Error;
 use std::process::{Command, Stdio};
+use std::os::windows::process::CommandExt;
 
 use crate::constants::AVERAGE_KEY;
 
@@ -15,6 +16,7 @@ pub fn ping_addr(addr: &str, timeout: u32) -> String {
     // cmd default output is not "UTF-8"
     let output = Command::new("cmd")
         .args(&["/C", "chcp", "65001", "&&", "ping", "-n", "3", "-w", &timeout.to_string(), addr])
+        .creation_flags(0x08000000)
         .output()
         .expect("failed to ping");
 
