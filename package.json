@@ -1,6 +1,6 @@
 {
   "name": "rwr-server-ping",
-  "version": "0.1.0-alpha2",
+  "version": "0.1.0,
   "description": "",
   "scripts": {
     "start": "vite",
