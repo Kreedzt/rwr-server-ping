@@ -1,4 +1,11 @@
-import { Link, Outlet, Route, Routes, useLocation } from '@solidjs/router';
+import {
+  Link,
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from '@solidjs/router';
 import {
   Box,
   CircularProgress,
@@ -19,6 +26,7 @@ import { useI18n } from '@solid-primitives/i18n';
 
 function Home() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [initLoading, setInitLoading] = createSignal(false);
   const [_t, { locale }] = useI18n();
   const t = useTranslate();
@@ -31,6 +39,9 @@ function Home() {
     setInitLoading(true);
     contextValue.configStore.init().then((newConfig) => {
       locale(newConfig.locale);
+      if (location.pathname === '/') {
+        navigate('/about', { replace: true });
+      }
     });
     setInitLoading(false);
   });

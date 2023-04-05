@@ -1,10 +1,10 @@
 [package]
 name = "rwr-server-ping"
-version = "0.0.0"
+version = "0.1.0-alpha2"
 description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
+authors = ["Kreedzt"]
+license = "GPLv3"
+repository = "https://github.com/Kreedzt/rwr-server-ping"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
