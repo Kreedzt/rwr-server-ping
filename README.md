@@ -7,7 +7,7 @@
 
 该工具通过调用 rwr 官方服务器查询地址, 可快速查询服务器状态信息
 
-English | [简体中文](README.md)
+[English](README_en.md) | 简体中文
 
 ## 快速上手
 

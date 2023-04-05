@@ -7,6 +7,8 @@
 
 Quick query server status by rwr official url.
 
+English | [简体中文](README.md)
+
 ## Quick Start
 
 Download latest [Release](https://github.com/Kreedzt/rwr-server-ping/releases), double-click exe to run app.
