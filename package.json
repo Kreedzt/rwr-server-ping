@@ -1,7 +1,7 @@
 {
   "name": "rwr-server-ping",
-  "version": "0.1.1",
-  "description": "",
+  "version": "0.1.2",
+  "description": "Quick query server status by rwr official url",
   "scripts": {
     "start": "vite",
     "dev": "vite",
@@ -9,7 +9,7 @@
     "serve": "vite preview",
     "tauri": "tauri"
   },
-  "license": "MIT",
+  "license": "GPLv3",
   "dependencies": {
     "@solid-primitives/i18n": "^1.2.4",
     "@solidjs/router": "^0.8.2",
