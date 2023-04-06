@@ -19,6 +19,8 @@ Available features:
 -   [x] Join game / Copy join game command
 -   [x] Favorites
 
+For `Windows 7` users, please [download](https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section) webview2 runtime.
+
 ## Development
 
 This project is based on [tauri](https://tauri.app/),  depend on the following 2 language environments at the same time:
