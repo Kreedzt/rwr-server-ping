@@ -19,7 +19,7 @@
 -   [x] 一键加入服务器 / 复制启动命令
 -   [x] 收藏夹
 
-针对 `Windows 7` 用户, 请按去 [官网](https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section)下载 `webview2` 运行时 
+针对 `Windows 7` 用户, 请去 [官网](https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section) 下载 `webview2` 运行时 
 
 ## 开发
 
