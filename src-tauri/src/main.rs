@@ -6,12 +6,13 @@ use std::sync::{Mutex, Arc};
 mod utils;
 mod constants;
 
+use rwr_server_ping::constants::TIMEOUT;
 use utils::{get_ping_res_ms, ping_addr};
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
 async fn ping_server(ip: &str) -> Result<i16, String> {
-    let res = ping_addr(ip, 1000);
+    let res = ping_addr(ip, TIMEOUT);
     let ms = get_ping_res_ms(&res);
 
     Ok(ms)
@@ -32,7 +33,7 @@ async fn ping_server_list(ip_vec: Vec<&str>) -> Result<Vec<i16>, String> {
 
         let handle = thread::spawn(move || {
             let saved_index = index;
-            let ms = get_ping_res_ms(&ping_addr(&ip, 1000));
+            let ms = get_ping_res_ms(&ping_addr(&ip, TIMEOUT));
 
             let mut result_vec = result.lock().unwrap();
 
