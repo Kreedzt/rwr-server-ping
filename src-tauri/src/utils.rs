@@ -20,6 +20,20 @@ pub fn ping_addr(addr: &str, timeout: u32) -> String {
         .output()
         .expect("failed to ping");
 
+    // Macos:
+    // ping x.x.x.x -t 3 -c 3
+    //
+    // 64 bytes from x.x.x.x: icmp_seq=0 ttl=44 time=273.597 ms
+    //
+    // --- x.x.x.x ping statistics ---
+    // 2 packets transmitted, 1 packets received, 50.0% packet loss
+    // round-trip min/avg/max/stddev = 273.597/273.597/273.597/0.000 ms
+
+    // 64 bytes from x.x.x.x: icmp_seq=0 ttl=44 time=273.597 ms
+    //
+    // --- x.x.x.x ping statistics ---
+    // 2 packets transmitted, 1 packets received, 50.0% packet loss
+    // round-trip min/avg/max/stddev = 273.597/273.597/273.597/0.000 ms
 
     // println!("{}", String::from_utf8_lossy(&output.stdout));
 
