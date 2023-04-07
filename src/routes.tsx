@@ -64,7 +64,7 @@ export const routes: RouteDefinition[] = [
       },
       {
         path: '/invasion_list',
-        component: lazy(() => import('./entries/invasionList/invasionList')),
+        component: lazy(() => import('./entries/invasionList/InvasionList')),
       },
       {
         path: '/ww2_invasion_list',
