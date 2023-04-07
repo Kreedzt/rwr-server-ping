@@ -1,26 +1,25 @@
 # .github/workflows/release.yml
 name: Release
 
-# on: push
-
 on:
   release:
     types: [created]
 
+permissions: write-all
 
 jobs:
   release:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, ubuntu-latest, windows-latest]
+        platform: [macos-latest, ubuntu-20.04, windows-latest]
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu'
+        if: matrix.platform == 'ubuntu-20.04'
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
