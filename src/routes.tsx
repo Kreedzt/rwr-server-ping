@@ -37,6 +37,11 @@ export const MENU_LIST: IMenuDefine[] = [
     icon: <ListIcon />,
   },
   {
+    link: '/mod_list',
+    title: 'menu_mod_server_list',
+    icon: <ListIcon />,
+  },
+  {
     link: '/favorite_list',
     title: 'menu_favorite',
     icon: <StarIcon />,
@@ -71,6 +76,10 @@ export const routes: RouteDefinition[] = [
         component: lazy(
           () => import('./entries/ww2InvasionList/WW2InvasionList')
         ),
+      },
+      {
+        path: '/mod_list',
+        component: lazy(() => import('./entries/ModList/ModList')),
       },
       {
         path: '/favorite_list',

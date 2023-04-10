@@ -2,6 +2,7 @@ export default {
   menu_all_server_list: 'All server list',
   menu_invasion_server_list: 'Invasion server list',
   menu_ww2_invasion_server_list: 'WW2 invasion server list',
+  menu_mod_server_list: 'Mod server list',
   app_full_name: 'RWR Server Ping',
   app_name: 'App name',
   app_version: 'App version',

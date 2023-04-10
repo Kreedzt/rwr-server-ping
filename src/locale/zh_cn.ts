@@ -2,6 +2,7 @@ export default {
   menu_all_server_list: '所有服务器列表',
   menu_invasion_server_list: '官方入侵服务器列表',
   menu_ww2_invasion_server_list: '官方二战服务器列表',
+  menu_mod_server_list: 'Mod 专用服务器列表',
   app_full_name: 'RWR 服务器状态检测',
   app_name: '应用名称',
   app_version: '应用版本',
