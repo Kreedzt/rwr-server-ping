@@ -79,7 +79,7 @@ export const routes: RouteDefinition[] = [
       },
       {
         path: '/mod_list',
-        component: lazy(() => import('./entries/ModList/ModList')),
+        component: lazy(() => import('./entries/modList/ModList')),
       },
       {
         path: '/favorite_list',
