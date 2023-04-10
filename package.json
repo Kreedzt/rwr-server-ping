@@ -1,6 +1,6 @@
 {
   "name": "rwr-server-ping",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Quick query server status by rwr official url",
   "scripts": {
     "start": "vite",
